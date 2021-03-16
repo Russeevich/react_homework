@@ -15,6 +15,11 @@ export const Form = ({props}) =>{
         })
     })
 
+    const changePath = (e, path) =>{
+        e.preventDefault()
+        props.setPath(path)
+    }
+
     return(
         <div className="form">
 
@@ -35,10 +40,14 @@ export const Form = ({props}) =>{
                     <a href="/links" className="form__link">{props.link}</a>
                 </div>}
 
-                <button className="form__btn">{props.title}</button>
+                <button  onClick={e => changePath(e, 'main')} className="form__btn">{props.title}</button>
 
                 <div className="form__links center form__register">
-                    <div className="form__linked">{props.register} {props.register && <a href="/links" className="form__link register">Регистрация</a>}</div>
+                    <div className="form__linked">
+                    {props.register}{props.login}
+                    {props.register && <a href="/links" onClick={e => changePath(e, 'register')} className="form__link register">Регистрация</a>}
+                    {props.login && <a href="/links" onClick={e => changePath(e, 'login')} className="form__link register">Войти</a>}
+                    </div>
                 </div>
             
 

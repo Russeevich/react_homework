@@ -75,9 +75,14 @@
             text-align: center;
         }
     }
+    &__linked {
+        display: flex;
+        justify-content: center;
+    }
     &__link {
         &.register {
             color: rgb(253, 191, 90);
+            margin-left: 5px;
         }
     }
     &__register {

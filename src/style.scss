@@ -17,8 +17,11 @@ a {
     color: #828282;
 }
 
+li {
+    list-style: none;
+}
+
 a:focus {
-    text-decoration: underline;
     color: unset;
 }
 
