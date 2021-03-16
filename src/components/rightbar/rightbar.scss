@@ -1,0 +1,10 @@
+.rightbar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 66%;
+    height: 100%;
+    min-height: 100vh;
+    background: url(../../assets/img/map.png) no-repeat;
+    background-size: cover;
+}
