@@ -1,7 +1,6 @@
 import React from 'react'
-import { Login } from "./components/login/login";
+import { Enter } from './components/enter/enter';
 import { Main } from './components/main/main';
-import { Register } from "./components/register/register";
 import './style.scss'
 
 function App() {
@@ -9,9 +8,9 @@ function App() {
 
     return ( 
     <div className = "App" >
-        {path==='login' && <Login props={{path, setPath}}/>}
-        {path==='register' && <Register props={{path, setPath}}/>}
-        {path==='main' | path ==='profile' && <Main props={{path, setPath}}/>}
+        {path==='login' | path==='register' ? 
+        <Enter props={{path, setPath}}/> : 
+        <Main props={{path, setPath}}/>}
     </div>
     );
 }
