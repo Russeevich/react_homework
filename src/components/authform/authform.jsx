@@ -1,9 +1,9 @@
 import { Form } from '../form/form'
-import './rightbar.scss'
+import '../auth/auth'
 
-export const RightBar = ({props}) =>{
+export const AuthForm = ({props}) =>{
     return(
-        <section className="rightbar">
+        <section className="auth__form">
             <Form props={props}/>
         </section>
     )

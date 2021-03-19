@@ -1,5 +1,5 @@
 import React from 'react'
-import { Enter } from './components/enter/enter';
+import { Auth } from './components/auth/auth';
 import { Main } from './components/main/main';
 import './style.scss'
 
@@ -9,7 +9,7 @@ function App() {
     return ( 
     <div className = "App" >
         {path==='login' | path==='register' ? 
-        <Enter props={{path, setPath}}/> : 
+        <Auth props={{path, setPath}}/> : 
         <Main props={{path, setPath}}/>}
     </div>
     );
