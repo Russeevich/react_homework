@@ -5,10 +5,9 @@ import './main.scss'
 
 
 export const Main = ({props}) =>{
-    return(
-    <>
+    return(<>
         <TopBar props={{...props}}/>
-        {props.path === 'main' && <Map/>}
+        {props.path === 'map' && <Map/>}
         {props.path === 'profile' && <Profile/>}
     </>
     )
