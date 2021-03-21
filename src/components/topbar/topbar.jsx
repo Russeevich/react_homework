@@ -18,7 +18,7 @@ export const TopBar = ({props}) =>{
                 </div>
                 <ul className="nav">
                     <li className="nav__item">
-                        <a href="/map" onClick={e => changePath(e, 'main')} className={props.path === 'main' ? "nav__link active" :"nav__link"}>Карта</a>
+                        <a href="/map" onClick={e => changePath(e, 'map')} className={props.path === 'map' ? "nav__link active" :"nav__link"}>Карта</a>
                     </li>
                     <li className="nav__item">
                         <a href="/profile" onClick={e => changePath(e, 'profile')} className={props.path === 'profile' ? "nav__link active" :"nav__link"}>Профиль</a>
