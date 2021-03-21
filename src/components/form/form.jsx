@@ -40,7 +40,7 @@ export const Form = ({props}) =>{
                     <a href="/links" className="form__link">{props.link}</a>
                 </div>}
 
-                <button  onClick={e => changePath(e, 'main')} className="form__btn">{props.title}</button>
+                <button  onClick={e => changePath(e, 'map')} className="form__btn">{props.title}</button>
 
                 <div className="form__links center form__register">
                     <div className="form__linked">
