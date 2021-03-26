@@ -4,7 +4,7 @@ import photo from '../../assets/img/logo.png'
 import text from '../../assets/img/logotext.png'
 
 
-export const LogoBar = ( ) =>{
+export const LogoBar = () =>{
     return(
         <section className="logobar">
             <div className="logobar__inner">
