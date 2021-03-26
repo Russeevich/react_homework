@@ -30,13 +30,13 @@ const TopBar = ({props}) =>{
                 </div>
                 <ul className="nav">
                     <li className="nav__item">
-                        <Button onClick={e => changePath(e, 'map')} className={props.path === 'map' ? "nav__link active" :"nav__link"}>Карта</Button>
+                        <Button data-testid="map" onClick={e => changePath(e, 'map')} className={props.path === 'map' ? "nav__link active" :"nav__link"}>Карта</Button>
                     </li>
                     <li className="nav__item">
-                        <Button onClick={e => changePath(e, 'profile')} className={props.path === 'profile' ? "nav__link active" :"nav__link"}>Профиль</Button>
+                        <Button data-testid="profile" onClick={e => changePath(e, 'profile')} className={props.path === 'profile' ? "nav__link active" :"nav__link"}>Профиль</Button>
                     </li>
                     <li className="nav__item">
-                        <Button onClick={e => logoutHandler(e, 'login')} className={props.path === 'logout' ? "nav__link active" :"nav__link"}>Выйти</Button>
+                        <Button data-testid="logout" onClick={e => logoutHandler(e, 'login')} className={props.path === 'logout' ? "nav__link active" :"nav__link"}>Выйти</Button>
                     </li>
                 </ul>
             </div>

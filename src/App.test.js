@@ -1,4 +1,5 @@
 import { fireEvent, render, screen } from '@testing-library/react'
+import {act} from 'react-dom/test-utils'
 import App from './App'
 
 jest.mock('mapbox-gl/dist/mapbox-gl', () => ({
@@ -6,11 +7,12 @@ jest.mock('mapbox-gl/dist/mapbox-gl', () => ({
 }))
 
 describe('App test', () =>{
-  render(<App/>)
-
-  const mail = 'test@test.com'
-
+  
+  const mail = 'test@test.com',
+        password = '123123'
+  
   it('change email', () => {
+    render(<App/>)
     const email = screen.getByPlaceholderText('mail@mail.ru')
   
     fireEvent.change(email, {
@@ -21,4 +23,46 @@ describe('App test', () =>{
   
     expect(email).toHaveValue(mail)
   })
+
+  it('change password', () => {
+    render(<App/>)
+    const pass = screen.getByPlaceholderText('************')
+  
+    fireEvent.change(pass, {
+      target: {
+        value: password
+      }
+    })
+  
+    expect(pass).toHaveValue(password)
+  })
+
+  // it('change to map', () =>{
+  //   render(<App/>)
+  //   const email = screen.getByPlaceholderText('mail@mail.ru'),
+  //         pass = screen.getByPlaceholderText('************'),
+  //         btn = screen.getByRole('button' , {
+  //           type: /submit/i
+  //         })
+  
+  //   fireEvent.change(email, {
+  //     target: {
+  //       value: mail
+  //     }
+  //   })
+
+  //   fireEvent.change(pass, {
+  //     target: {
+  //       value: password
+  //     }
+  //   })
+  
+  //   expect(email).toHaveValue(mail)
+  //   expect(pass).toHaveValue(password)
+    
+  //   act(() =>{
+  //     fireEvent.click(btn)
+  //   })
+
+  // })
 })
