@@ -1,16 +1,21 @@
-import { LeftBar } from '../leftbar/leftbar'
-import { RightBar } from '../rightbar/rightbar';
-import './login.scss'
+import  AuthForm  from '../authform/authform';
+import PropTypes from 'prop-types'
 
 
-export const Login = ({props}) =>{
+const Login = ({props}) =>{
     return (
-    <div className="login">
-        <LeftBar/>
-        <RightBar props={{title: 'Войти', inputs: [
-            {title: 'Email', placeholder: 'mail@mail.ru'},
-            {title: 'Пароль', placeholder: '************'}
+        <AuthForm props={{title: 'Войти', inputs: [
+            {title: 'Email', placeholder: 'mail@mail.ru', name: 'email'},
+            {title: 'Пароль', placeholder: '************', name: 'password'}
         ], link: 'Забыли пароль?', register: 'Новый пользователь?', ...props}}/>
-    </div>
     )
 }
+
+Login.propTypes = {
+    props: PropTypes.shape({
+        path: PropTypes.string.isRequired,
+        setPath: PropTypes.func.isRequired
+    })
+}
+
+export default Login

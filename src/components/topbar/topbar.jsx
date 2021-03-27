@@ -1,12 +1,24 @@
-import './topbar.scss'
-import logo from '../../assets/img/logo.png'
+import React from 'react'
+import { AuthContext } from '../context/auth/authContext';
 import text from '../../assets/img/logotext.png'
+import logo from '../../assets/img/logo.png'
+import PropTypes from 'prop-types'
+import { Button } from '@material-ui/core';
+import './topbar.scss'
 
-export const TopBar = ({props}) =>{
+const TopBar = ({props}) =>{
 
+    const {logout} = React.useContext(AuthContext)
+
+    
     const changePath = (e, path) =>{
         e.preventDefault()
         props.setPath(path)
+    }
+    
+    const logoutHandler = (e, path) =>{
+        logout()
+        changePath(e, path)
     }
 
     return(
@@ -18,16 +30,25 @@ export const TopBar = ({props}) =>{
                 </div>
                 <ul className="nav">
                     <li className="nav__item">
-                        <a href="/map" onClick={e => changePath(e, 'main')} className={props.path === 'main' ? "nav__link active" :"nav__link"}>Карта</a>
+                        <Button data-testid="map" onClick={e => changePath(e, 'map')} className={props.path === 'map' ? "nav__link active" :"nav__link"}>Карта</Button>
                     </li>
                     <li className="nav__item">
-                        <a href="/profile" onClick={e => changePath(e, 'profile')} className={props.path === 'profile' ? "nav__link active" :"nav__link"}>Профиль</a>
+                        <Button data-testid="profile" onClick={e => changePath(e, 'profile')} className={props.path === 'profile' ? "nav__link active" :"nav__link"}>Профиль</Button>
                     </li>
                     <li className="nav__item">
-                        <a href="/logout" onClick={e => changePath(e, 'login')} className={props.path === 'logout' ? "nav__link active" :"nav__link"}>Выйти</a>
+                        <Button data-testid="logout" onClick={e => logoutHandler(e, 'login')} className={props.path === 'logout' ? "nav__link active" :"nav__link"}>Выйти</Button>
                     </li>
                 </ul>
             </div>
         </header>
     )
 }
+
+TopBar.propTypes = {
+    props: PropTypes.shape({
+        path: PropTypes.string.isRequired,
+        setPath: PropTypes.func.isRequired
+    })
+}
+
+export default TopBar

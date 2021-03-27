@@ -1,18 +1,20 @@
 import React from 'react'
-import { Login } from "./components/login/login";
-import { Main } from './components/main/main';
-import { Register } from "./components/register/register";
+import Auth  from './components/auth/auth';
+import { AuthState } from './components/context/auth/authState';
+import Main from './components/main/main';
 import './style.scss'
 
 function App() {
     const [path, setPath] = React.useState('login')
-
-    return ( 
-    <div className = "App" >
-        {path==='login' && <Login props={{path, setPath}}/>}
-        {path==='register' && <Register props={{path, setPath}}/>}
-        {path==='main' | path ==='profile' && <Main props={{path, setPath}}/>}
-    </div>
+    
+    return (
+    <AuthState>
+        <div className = "App" >
+            {(path==='login' | path==='register')? 
+            <Auth props={{path, setPath}}/> : 
+            <Main props={{path, setPath}}/>}
+        </div>
+    </AuthState>
     );
 }
 

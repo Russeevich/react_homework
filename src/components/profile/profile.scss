@@ -1,0 +1,105 @@
+.profile {
+    background: linear-gradient(0deg, rgba(28, 26, 25, 0.5), rgba(28, 26, 25, 0.5)), url(../../assets/img/map.png) no-repeat;
+    height: calc(100vh - 102px);
+    background-size: cover;
+    position: relative;
+    &__inner {
+        position: absolute;
+        padding: 59px 43px 67px 44px;
+        background: #FFFFFF;
+        box-shadow: 0px 10px 20px -5px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+    &__form {
+        margin-top: 82px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    &__data {
+        display: flex;
+        flex-direction: column;
+    }
+    &__input {
+        font-style: normal;
+        font-weight: bold !important;
+        font-size: 16px !important;
+        line-height: 19px !important;
+        color: #000000 !important;
+        margin-top: 26px !important;
+        &:first-child {
+            margin-top: 0;
+        }
+    }
+    &__number {
+        display: flex;
+        &>.profile__input:last-child {
+            margin-left: 35px;
+        }
+    }
+    &__title,
+    &__subtitle {
+        text-align: center;
+    }
+    &__title {
+        font-style: normal;
+        font-weight: bold;
+        font-size: 36px;
+        line-height: 42px;
+        color: #000000
+    }
+    &__subtitle {
+        font-style: normal;
+        font-weight: normal;
+        font-size: 18px;
+        line-height: 21px;
+        color: #7B7B7B;
+        margin-top: 13px;
+    }
+    &__info {
+        display: flex;
+    }
+}
+
+.card {
+    max-width: 347px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    margin-left: 99px;
+    &__inner {
+        padding: 18px 16px 16px 28px;
+        background: #FFFFFF;
+        box-shadow: 0px 5px 20px 2px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+        width: 100%;
+    }
+    &__logo {
+        width: 33.83px;
+        height: 33.83px;
+    }
+    &__number {
+        white-space: nowrap;
+        width: 100%;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 21px;
+        line-height: 25px;
+        color: #000000;
+    }
+    &__top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    &__center {
+        margin-top: 28px;
+    }
+    &__bottom {
+        position: relative;
+        margin-top: 35px;
+    }
+}
