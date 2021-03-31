@@ -1,36 +1,28 @@
 import React from 'react'
-import { AuthContext } from '../context/auth/authContext';
 import { Map } from "../map/map"
-import { Profile } from "../profile/profile"
-import TopBar  from "../topbar/topbar"
-import PropTypes from 'prop-types'
+import Profile from "../profile/profile"
+import {connect} from 'react-redux'
+import { Switch, Route, Redirect } from 'react-router-dom';
 import './main.scss'
 
 
-const Main = ({props}) =>{
+const Main = (props) =>{
 
-    const {auth} = React.useContext(AuthContext)
+    const {isLoggedIn, authStatus} = props.authReducer
 
-
-    React.useEffect(() =>{
-        if(!auth.isLoggedIn)
-            props.setPath('login')
-        // eslint-disable-next-line
-    }, [])
-
+    if(!authStatus.success || !authStatus.token || !isLoggedIn)
+        return <Redirect to='/register'/>
+    
     return(<>
-        <TopBar props={{...props}}/>
-        {props.path === 'map' && <Map/>}
-        {props.path === 'profile' && <Profile/>}
+        <Switch>
+            <Route path="/map" component={Map}/>
+            <Route path="/profile" component={Profile}/>
+        </Switch>
     </>
     )
 }
 
-Main.propTypes = {
-    props: PropTypes.shape({
-        path: PropTypes.string.isRequired,
-        setPath: PropTypes.func.isRequired
-    })
-}
+const mapStateToprops = state => state
 
-export default Main
+
+export default connect(mapStateToprops, null)(Main)

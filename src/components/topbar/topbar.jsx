@@ -1,24 +1,21 @@
 import React from 'react'
-import { AuthContext } from '../context/auth/authContext';
 import text from '../../assets/img/logotext.png'
 import logo from '../../assets/img/logo.png'
-import PropTypes from 'prop-types'
-import { Button } from '@material-ui/core';
+import { Button } from '@material-ui/core'
+import { Link } from 'react-router-dom'
+import { connect } from 'react-redux'
+import { logoutFromApp } from '../../modules/auth/actions';
 import './topbar.scss'
 
-const TopBar = ({props}) =>{
+const TopBar = (props) =>{
 
-    const {logout} = React.useContext(AuthContext)
-
+    const {path} = props.props.match
     
-    const changePath = (e, path) =>{
+
+    const logout = (e) =>{
+        const {logoutFromApp} = props
+        logoutFromApp({})
         e.preventDefault()
-        props.setPath(path)
-    }
-    
-    const logoutHandler = (e, path) =>{
-        logout()
-        changePath(e, path)
     }
 
     return(
@@ -30,13 +27,17 @@ const TopBar = ({props}) =>{
                 </div>
                 <ul className="nav">
                     <li className="nav__item">
-                        <Button data-testid="map" onClick={e => changePath(e, 'map')} className={props.path === 'map' ? "nav__link active" :"nav__link"}>Карта</Button>
+                        <Link to='/map'>
+                            <Button data-testid="map" className={path === '/map' ? "nav__link active" :"nav__link"}>Карта</Button>
+                        </Link>
                     </li>
                     <li className="nav__item">
-                        <Button data-testid="profile" onClick={e => changePath(e, 'profile')} className={props.path === 'profile' ? "nav__link active" :"nav__link"}>Профиль</Button>
+                        <Link to='/profile'>
+                            <Button data-testid="profile" className={path === '/profile' ? "nav__link active" :"nav__link"}>Профиль</Button> 
+                        </Link>
                     </li>
                     <li className="nav__item">
-                        <Button data-testid="logout" onClick={e => logoutHandler(e, 'login')} className={props.path === 'logout' ? "nav__link active" :"nav__link"}>Выйти</Button>
+                        <Button data-testid="logout" onClick={e => logout(e)} className="nav__link">Выйти</Button>
                     </li>
                 </ul>
             </div>
@@ -44,11 +45,6 @@ const TopBar = ({props}) =>{
     )
 }
 
-TopBar.propTypes = {
-    props: PropTypes.shape({
-        path: PropTypes.string.isRequired,
-        setPath: PropTypes.func.isRequired
-    })
-}
+const mapDispatchToprops = {logoutFromApp}
 
-export default TopBar
+export default connect(null, mapDispatchToprops)(TopBar)

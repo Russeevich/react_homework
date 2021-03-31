@@ -1,19 +1,21 @@
-import { TextField } from '@material-ui/core';
-import Button from '@material-ui/core/Button';
 import React from 'react'
 import PropTypes from 'prop-types'
-import { AuthContext } from '../context/auth/authContext';
+import { TextField } from '@material-ui/core';
+import Button from '@material-ui/core/Button';
+import {connect} from 'react-redux'
+import { fetchLoginRequest, fetchRegisterRequest } from '../../modules/auth/actions';
+import {Link, Redirect} from 'react-router-dom'
 import './form.scss'
 
-const Form = ({props}) =>{
-
-    const {login} = React.useContext(AuthContext)
+const Form = (props) =>{
 
     const [state, setState] = React.useState({
         email: '',
         password: '',
         name: null
     })
+
+    const {isLoggedIn} = props.authReducer
 
     const ActiveBtn = () =>{
         if(state.email.length > 1 && state.password.length > 1){
@@ -29,43 +31,46 @@ const Form = ({props}) =>{
         setState({...state, ...obj})
     }
 
-    const changePath = (e, path) =>{
+    const loginHandler = (e) =>{
         e.preventDefault()
-        props.setPath(path)
+
+        const {fetchLoginRequest, fetchRegisterRequest} = props
+
+        if(props.props.register)
+        fetchLoginRequest({email: state.email, password: state.password})
+        else fetchRegisterRequest({email: state.email, password: state.password, name: state.name.split(' ')[0], surname: state.name.split(' ')[1]})
     }
 
-    const loginHandler = (e, path) =>{
-        login(state.email, state.password)
-        changePath(e, path)
-    }
+    if(isLoggedIn)
+        return <Redirect from='/login' to='/map'/>
 
     return(
         <div className="form">
 
-            <form className="form__inner" onSubmit={e => loginHandler(e, 'map')}>
+            <form className="form__inner" onSubmit={e => loginHandler(e)}>
 
-                <h4 className="form__title">{props.title}</h4>
+                <h4 className="form__title">{props.props.title}</h4>
 
-                {props.inputs.map(item => {
+                {props.props.inputs.map(item => {
 
                     return (
                     <div className="form__info" key={item.placeholder}>
-                        <TextField data-testid={item.name} onChange={(e) => changeValue(e, item.name)} label={item.title} placeholder={item.placeholder} required/>
+                        <TextField data-testid={item.name} onChange={(e) => changeValue(e, item.name)} label={item.title} type={item.name === 'password' ? item.name : 'text'} placeholder={item.placeholder} required/>
                     </div>
                     )
                 })}
-                {props.link && 
+                {props.props.link && 
                 <div className="form__links">
-                    <a href="/links" className="form__link">{props.link}</a>
+                    <a href="/links" className="form__link">{props.props.link}</a>
                 </div>}
 
-                <Button variant="contained" color="primary" type="submit" className={ActiveBtn() ? "form__btn" : "form__btn Mui-disabled"}>{props.title}</Button>
+                <Button data-testid="register_login" variant="contained" color="primary" type="submit" className={ActiveBtn() ? "form__btn" : "form__btn Mui-disabled"}>{props.props.title}</Button>
 
                 <div className="form__links center form__register">
                     <div className="form__linked">
-                    {props.register}{props.login}
-                    {props.register && <a href="/links" onClick={e => changePath(e, 'register')} className="form__link register">Регистрация</a>}
-                    {props.login && <a href="/links" onClick={e => changePath(e, 'login')} className="form__link register">Войти</a>}
+                    {props.props.register}{props.props.login}
+                    {props.props.register && <Link from='/login' to='/register' data-testid="register_form" className="form__link register">Регистрация</Link>}
+                    {props.props.login && <Link from='/rigister' to='/login' data-testid="login_form" className="form__link register">Войти</Link>}
                     </div>
                 </div>
             
@@ -92,5 +97,8 @@ Form.propTypes = {
         login: PropTypes.string
     })
 }
+const mapStateToprops = state => state
 
-export default Form
+const mapDispatchToprops = {fetchLoginRequest, fetchRegisterRequest}
+
+export default connect(mapStateToprops, mapDispatchToprops)(Form)

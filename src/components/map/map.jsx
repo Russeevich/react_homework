@@ -1,11 +1,12 @@
 import React from 'react'
+import TopBar  from "../topbar/topbar"
 import './map.scss'
 import mapboxgl from 'mapbox-gl'
 
 mapboxgl.accessToken = 'pk.eyJ1IjoiMXRvMyIsImEiOiJja21reXVodHoxMWV1Mm5ta29mODduYnFjIn0.OPsdMhl2rM9KYhpRLG9Vlg'
 
 
-export const Map = () =>{
+export const Map = (props) =>{
     const mapContainerRef = React.useRef(null)
 
     React.useEffect(() => {
@@ -16,13 +17,15 @@ export const Map = () =>{
             zoom: 12.5,
         })
 
-        return () => map.remove()
+        // return () => map.remove()
     }, [])
 
 
-    return (
-    <section className="map" ref={mapContainerRef}>
-           
-    </section>
+    return (<>
+        <TopBar props={{...props}}/>
+        <section className="map" ref={mapContainerRef}>
+            
+        </section>
+    </>
     )
 }

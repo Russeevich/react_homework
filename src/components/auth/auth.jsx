@@ -1,26 +1,20 @@
 import  Login  from "../login/login";
 import  Register  from "../register/register";
 import { LogoBar } from '../logobar/logobar';
-import PropTypes from 'prop-types'
+import {Switch, Route} from 'react-router-dom';
 import './auth.scss'
 
 
-const Auth = ({props}) =>{
+const Auth = () =>{
     return(
     <section className="auth">
         <LogoBar/>
-        {props.path==='login' && <Login props={props}/>}
-        {props.path==='register' && <Register props={props}/>}
+        <Switch>
+            <Route path='/login' component={Login}/>
+            <Route path='/register' component={Register}/>
+        </Switch>
     </section>
     )
-}
-
-
-Auth.propTypes = {
-    props: PropTypes.shape({
-        path: PropTypes.string.isRequired,
-        setPath: PropTypes.func
-    })
 }
 
 export default Auth
