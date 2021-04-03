@@ -1,8 +1,10 @@
 import React from 'react'
 import Auth  from './components/auth/auth';
 import { Redirect, Switch, Route } from 'react-router-dom';
-import Main from './components/main/main';
 import './style.scss'
+import  PrivateRoute  from './privateRoute';
+import { Map } from './components/map/map';
+import Profile from './components/profile/profile';
 
 function App() {
     return (
@@ -10,8 +12,8 @@ function App() {
             <Switch>
                 <Route path="/login" component={Auth}/>
                 <Route path="/register" component={Auth}/>
-                <Route path="/map" component={Main}/>
-                <Route path="/profile" component={Main}/>
+                <PrivateRoute path="/map" comp={Map}/>
+                <PrivateRoute path="/profile" comp={Profile}/>
                 <Redirect from='/' to='/login'/>
             </Switch>
         </div>
