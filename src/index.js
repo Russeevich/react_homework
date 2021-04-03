@@ -3,11 +3,21 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { theme } from "loft-taxi-mui-theme";
+import { MuiThemeProvider } from "@material-ui/core/styles";
+import { Provider } from 'react-redux';
+import {BrowserRouter} from 'react-router-dom'
+import {store} from './store'
 
-ReactDOM.render( 
-    <React.StrictMode >
-        <App / >
-    </React.StrictMode>,
+ReactDOM.render(
+    <Provider store={store}>
+        <BrowserRouter>
+            <MuiThemeProvider theme={theme}>
+                    <App />
+            </MuiThemeProvider>
+        </BrowserRouter>
+    </Provider>
+        ,
     document.getElementById('root')
 );
 
