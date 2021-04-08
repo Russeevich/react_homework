@@ -7,22 +7,13 @@ import Button from '@material-ui/core/Button';
 import TopBar  from "../topbar/topbar"
 import {connect} from 'react-redux'
 import './profile.scss'
-import { fetchCardRequest, getCardRequest } from '../../modules/card/actions';
+import { fetchCardRequest } from '../../modules/card/actions';
 
 const Profile = (props) =>{
 
     const { card } = props.cardReducer
 
     const [state, setState] = React.useState(card)
-
-    React.useEffect(() =>{
-        if(card.cardNumber.length < 1){
-            const {token} = props.authReducer.authStatus,
-                  {getCardRequest} = props
-            getCardRequest({token: token})
-        }
-        // eslint-disable-next-line
-    }, [])
 
     React.useEffect(() =>{
         setState(card)
@@ -160,6 +151,6 @@ const Profile = (props) =>{
 
 const mapStateToprops = state => state
 
-const mapDispatchToprops = {fetchCardRequest, getCardRequest}
+const mapDispatchToprops = {fetchCardRequest}
 
 export default connect(mapStateToprops, mapDispatchToprops)(Profile)
