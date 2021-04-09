@@ -1,7 +1,8 @@
-import { Select, MenuItem } from '@material-ui/core'
+import { Select, MenuItem, Button } from '@material-ui/core'
 import React from 'react'
 import { connect } from 'react-redux'
 import './taxiform.scss'
+import { getRoutesRequest } from '../../modules/routes/actions';
 
 
 const TaxiForm = (props) =>{
@@ -13,10 +14,7 @@ const TaxiForm = (props) =>{
         input2: ''
     })
 
-    const [value, setValue] = React.useState({
-        value1: addresses,
-        value2: addresses
-    })
+    const [addr, setAddr] = React.useState([])
 
     const changeHandler = (e, target) =>{
         e.preventDefault()
@@ -31,32 +29,49 @@ const TaxiForm = (props) =>{
         obj[target] = items
 
         setState({...state, ...obj})
-        
-        
-        if(target === 'input1'){
-            const newVal = addresses.filter(item => item !== addresses[items - 1])
-            setValue({...value, value2: newVal})
-        }
-        else {
-            const newVal = addresses.filter(item => item !== addresses[items - 1])
-            setValue({...value, value1: newVal})
-        }
-        
+    }
+
+    React.useEffect(() =>{
+        setAddr(addresses.map((item, index) => {
+            return {name: item, id: index}
+        }))
+        // eslint-disable-next-line
+    }, [])
+
+    const submitHandler = (e) =>{
+
+        const {getRoutesRequest} = props
+
+        getRoutesRequest({address1: addr[state.input1].name, address2: addr[state.input2].name})
+
+        e.preventDefault()
     }
 
     return (
-        <form className="taxi-form">
+        <form className="taxi-form" onSubmit={submitHandler}>
 
             <div className="taxi-form__field">
                 <Select value={state.input1} className="taxi-form__input" onChange={(e) => changeHandler(e, 'input1')}>
-                    {value.value1.map((item, index) => <MenuItem  key={index} value={index + 1}>{item}</MenuItem>)}
+                    {
+                    addr.filter(item => item.id !== state.input2)
+                         .map((item, index) => <MenuItem  key={index} value={item.id}>{item.name}</MenuItem>)
+                    }
                 </Select>
             </div>
 
             <div className="taxi-form__field">
                 <Select value={state.input2} className="taxi-form__input" onChange={(e) => changeHandler(e, 'input2')}>
-                    {value.value2.map((item, index) => <MenuItem  key={index} value={index + 1}>{item}</MenuItem>)}
+                    {
+                    addr.filter(item => item.id !== state.input1)
+                         .map((item, index) => <MenuItem  key={index} value={item.id}>{item.name}</MenuItem>)
+                    }
                 </Select>
+            </div>
+
+            <div className="taxi-form__order">
+
+
+                <Button data-testid="order_test" variant="contained" color="primary" type="submit" className="form__btn">Заказать</Button>
             </div>
 
         </form>
@@ -65,6 +80,6 @@ const TaxiForm = (props) =>{
 
 const mapStateToprops = state => state
 
-const mapDispatchToprops = {}
+const mapDispatchToprops = {getRoutesRequest}
 
 export default connect(mapStateToprops, mapDispatchToprops)(TaxiForm)

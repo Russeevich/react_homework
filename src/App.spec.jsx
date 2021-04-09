@@ -8,39 +8,58 @@ import { MuiThemeProvider } from "@material-ui/core/styles";
 import {BrowserRouter} from 'react-router-dom'
 
 jest.mock('mapbox-gl/dist/mapbox-gl', () => ({
-    GeolocateControl: jest.fn(),
-    Map: jest.fn(() => ({
-      addControl: jest.fn(),
-      on: jest.fn(),
-      remove: jest.fn(),
-    })),
-    NavigationControl: jest.fn(),
+  GeolocateControl: jest.fn(),
+  Map: jest.fn(() => ({
+    addControl: jest.fn(),
+    on: jest.fn(),
+    remove: jest.fn(),
+  })),
+  NavigationControl: jest.fn(),
 }));
 
-const initialState = {
-    "authReducer":{
-      "auth":{
-        "email":"123",
-        "password":"123"
-      },
-      "authStatus":{
-        "success":true,
-        "token":"recfGA07y57sV41Xs"
-      },
-      "isLoggedIn":true,
-      "error":{}
-    },
-    "cardReducer":{
-      "card":{
-        "expiryDate":"",
-        "cardNumber":"",
-        "cvc":"",
-        "cardName":""
-      },
-      "cardStatus":{},
-      "error":{}
-    }
-}
+describe('topbar', () =>{
+  const pass = '123',
+        email = '123'
+        
+  it('topbar logout', () =>{
+        render(
+        <BrowserRouter>
+            <MuiThemeProvider theme={theme}>
+                <App/>
+            </MuiThemeProvider>
+        </BrowserRouter>
+        , { initialState: {}})
+
+      const loginInput = screen.getByPlaceholderText('mail@mail.ru'),
+            passInput = screen.getByPlaceholderText('************')
+
+      act(() =>{
+        fireEvent.change(loginInput, {target: {value: email}})
+        fireEvent.change(passInput, {target: {value: pass}})
+      })
+
+      expect(loginInput).toHaveValue(email)
+      expect(passInput).toHaveValue(pass)
+
+      const btn = screen.getByTestId('register_login')
+
+      act(() =>{
+        fireEvent.click(btn)
+      })
+
+      setTimeout(()=>{
+        const logout = screen.getByTestId('logout')
+        expect(logout).toBeInTheDocument()
+
+        act(() =>{
+            fireEvent.click(logout)
+        })
+
+        const btn = screen.getByTestId('register_login')
+        expect(btn).toBeInTheDocument()
+      }, 2000)
+    })
+})
 
 describe('auth', () =>{
   const pass = '123',
@@ -119,26 +138,5 @@ describe('auth', () =>{
   
         expect(link).toBeInTheDocument()
       }, 2000)
-    })
-})
-
-describe('topbar', () =>{
-    it('topbar logout', () =>{
-        render(
-        <BrowserRouter>
-            <MuiThemeProvider theme={theme}>
-                <App/>
-            </MuiThemeProvider>
-        </BrowserRouter>
-        , { initialState})
-        const logout = screen.getByTestId('logout')
-        expect(logout).toBeInTheDocument()
-
-        act(() =>{
-            fireEvent.click(logout)
-        })
-
-        const btn = screen.getByTestId('register_login')
-        expect(btn).toBeInTheDocument()
     })
 })

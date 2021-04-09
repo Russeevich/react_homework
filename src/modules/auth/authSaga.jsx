@@ -7,23 +7,11 @@ import {
     fetchRegisterSuccess,
     fetchRegisterFailure
 } from './actions';
+import { fetchRegisterData, fetchLoginData } from './api';
 
-const url = 'https://loft-taxi.glitch.me'
-
-function fetchLoginData(payload){
-    return fetch(url + '/auth', 
-    {
-        method: 'POST',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(payload)
-    })
-    .then(resp => resp.json())
-}
-
-function* loginRequest({payload}){
+export function* loginRequest({payload}){
+    if(!payload)
+        return
     try{
         const data = yield call(fetchLoginData, payload)
         if(data.success)
@@ -36,19 +24,6 @@ function* loginRequest({payload}){
 
 export function* loginSagaRequest(){
     yield takeEvery(fetchLoginRequest.toString(), loginRequest)
-}
-
-function fetchRegisterData(payload){
-    return fetch(url + '/register', 
-    {
-        method: 'POST',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(payload)
-    })
-    .then(resp => resp.json())
 }
 
 function* registerRequest({payload}){

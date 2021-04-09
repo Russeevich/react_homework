@@ -9,15 +9,18 @@ import TaxiForm from '../taxiform/taxiform'
 
 mapboxgl.accessToken = 'pk.eyJ1IjoiMXRvMyIsImEiOiJja21reXVodHoxMWV1Mm5ta29mODduYnFjIn0.OPsdMhl2rM9KYhpRLG9Vlg'
 
+let map
 
 const Map = (props) =>{
     const mapContainerRef = React.useRef(null),
           { card } = props.cardReducer,
           { addresses } = props.routesReducer.routes,
-          [state, setState] = React.useState(false)
+          { points } = props.routesReducer,
+          [state, setState] = React.useState(false),
+          [load, setLoad] = React.useState(true),
+          [line, setLine] = React.useState(null)
 
     React.useEffect(() => {
-
         if(card.cardNumber.length < 1){
             const {token} = props.authReducer.authStatus,
                   {getCardRequest} = props
@@ -30,11 +33,15 @@ const Map = (props) =>{
         }
 
         // eslint-disable-next-line
-        const map = new mapboxgl.Map({
+        map = new mapboxgl.Map({
             container: mapContainerRef.current,
             style: 'mapbox://styles/mapbox/streets-v11',
-            center: [-104.9876, 39.7405],
+            center: [30.316273,59.940578],
             zoom: 12.5,
+        })
+
+        map.on('load', () =>{
+            setLoad(false)
         })
 
         // return () => map.remove()
@@ -46,6 +53,51 @@ const Map = (props) =>{
             setState(true)
         else setState(false)
     }, [card])
+
+    React.useEffect(() =>{
+        if(!load)
+            setLine(drawRoute(points))
+        // eslint-disable-next-line
+    }, [points])
+
+    const drawRoute = (coordinates) => {
+
+        if(map.getLayer(line))
+                map.removeLayer(line)
+
+        const id = Math.random().toString(36).substring(7)
+
+        map.flyTo({
+          center: coordinates[0],
+          zoom: 15
+        })
+
+        map.addLayer({
+          id,
+          type: "line",
+          source: {
+            type: "geojson",
+            data: {
+              type: "Feature",
+              properties: {},
+              geometry: {
+                type: "LineString",
+                coordinates
+              }
+            }
+          },
+          layout: {
+            "line-join": "round",
+            "line-cap": "round"
+          },
+          paint: {
+            "line-color": "#ffc617",
+            "line-width": 8
+          }
+        })
+
+        return id
+    }
 
 
     return (<>
