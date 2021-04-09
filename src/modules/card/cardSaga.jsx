@@ -7,24 +7,11 @@ import {
     getCardSuccess,
     getCardFailure
 } from './actions';
+import { getCardData, fetchCardData } from './api';
 
-
-const url = 'https://loft-taxi.glitch.me'
-
-function fetchCardData(payload){
-    return fetch(url + '/card', 
-    {
-        method: 'POST',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(payload)
-    })
-    .then(resp => resp.json())
-}
-
-function* cardRequestFetch({payload}){
+export function* cardRequestFetch({payload}){
+    if(!payload)
+        return
     try{
         const data = yield call(fetchCardData, payload)
         if(data.success)
@@ -39,19 +26,10 @@ export function* fetchCardSagaRequest(){
     yield takeEvery(fetchCardRequest.toString(), cardRequestFetch)
 }
 
-function getCardData(payload){
-    return fetch(url + '/card?' +  new URLSearchParams(payload), 
-    {
-        method: 'GET',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        }
-    })
-    .then(resp => resp.json())
-}
 
-function* cardRequestGet({payload}){
+export function* cardRequestGet({payload}){
+    if(!payload)
+        return
     try{
         const data = yield call(getCardData, payload)
         if(data.cardName){

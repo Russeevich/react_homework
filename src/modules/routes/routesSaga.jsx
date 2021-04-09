@@ -7,23 +7,9 @@ import {
     getRoutesRequest,
     getRoutesSuccess
 } from './actions';
+import { fetchRoutesData, getRoutesData } from './api';
 
-const url = 'https://loft-taxi.glitch.me'
-
-function fetchRoutesData(){
-    return fetch(url + '/addressList', 
-    {
-        method: 'GET',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        }
-    })
-    .then(resp => resp.json())
-}
-
-
-function* routesRequestFetch(){
+export function* routesRequestFetch(){
     try{
         const data = yield call(fetchRoutesData)
         if(data.addresses)
@@ -38,19 +24,9 @@ export function* fetchRoutesSagaRequest(){
     yield takeEvery(fetchRoutesRequest.toString(), routesRequestFetch)
 }
 
-function getRoutesData(payload){
-    return fetch(url + '/route?' + new URLSearchParams(payload), 
-    {
-        method: 'GET',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        }
-    })
-    .then(resp => resp.json())
-}
-
-function* routesRequestGet({payload}){
+export function* routesRequestGet({payload}){
+    if(!payload)
+        return
     try{
         const data = yield call(getRoutesData, payload)
         if(data.length > 0)

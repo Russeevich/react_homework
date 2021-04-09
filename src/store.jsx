@@ -23,9 +23,16 @@ export const store = createStore(
         window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
     )
 )
+let currentValue
+
+function handleChange() {
+    let previousValue = currentValue
+    currentValue = store.getState()
+    if (previousValue !== currentValue) {
+        localStorage.setItem('store', JSON.stringify(store.getState()))
+    }
+}
+
+store.subscribe(handleChange)
 
 saga.run(rootSaga)
-
-store.subscribe(() => {
-    localStorage.setItem('store', JSON.stringify(store.getState()))
-})

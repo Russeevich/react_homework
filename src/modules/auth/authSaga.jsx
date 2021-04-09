@@ -26,7 +26,9 @@ export function* loginSagaRequest(){
     yield takeEvery(fetchLoginRequest.toString(), loginRequest)
 }
 
-function* registerRequest({payload}){
+export function* registerRequest({payload}){
+    if(!payload)
+        return
     try{
         const data = yield call(fetchRegisterData, payload)
         if(data.success)

@@ -1,7 +1,7 @@
 import reducer from './reducer'
 import * as types from './actions'
 
-describe('auth reducer', () => {
+describe('card reducer', () => {
     const token = '123132123asadsads',
           expiryDate = '12/31',
           cardNumber = '0000 0000 0000 0000',
