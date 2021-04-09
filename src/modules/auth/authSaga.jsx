@@ -10,8 +10,6 @@ import {
 import { fetchRegisterData, fetchLoginData } from './api';
 
 export function* loginRequest({payload}){
-    if(!payload)
-        return
     try{
         const data = yield call(fetchLoginData, payload)
         if(data.success)
@@ -27,8 +25,6 @@ export function* loginSagaRequest(){
 }
 
 export function* registerRequest({payload}){
-    if(!payload)
-        return
     try{
         const data = yield call(fetchRegisterData, payload)
         if(data.success)

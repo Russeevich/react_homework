@@ -25,8 +25,6 @@ export function* fetchRoutesSagaRequest(){
 }
 
 export function* routesRequestGet({payload}){
-    if(!payload)
-        return
     try{
         const data = yield call(getRoutesData, payload)
         if(data.length > 0)

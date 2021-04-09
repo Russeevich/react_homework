@@ -10,8 +10,6 @@ import {
 import { getCardData, fetchCardData } from './api';
 
 export function* cardRequestFetch({payload}){
-    if(!payload)
-        return
     try{
         const data = yield call(fetchCardData, payload)
         if(data.success)
@@ -28,8 +26,6 @@ export function* fetchCardSagaRequest(){
 
 
 export function* cardRequestGet({payload}){
-    if(!payload)
-        return
     try{
         const data = yield call(getCardData, payload)
         if(data.cardName){
