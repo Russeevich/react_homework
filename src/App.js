@@ -1,17 +1,21 @@
 import React from 'react'
-import { Login } from "./components/login/login";
-import { Main } from './components/main/main';
-import { Register } from "./components/register/register";
+import Auth from './components/auth/auth';
+import { Redirect, Switch, Route } from 'react-router-dom';
 import './style.scss'
+import PrivateRoute from './privateRoute';
+import Map from './components/map/map';
+import Profile from './components/profile/profile';
 
 function App() {
-    const [path, setPath] = React.useState('login')
-
     return ( 
     <div className = "App" >
-        {path==='login' && <Login props={{path, setPath}}/>}
-        {path==='register' && <Register props={{path, setPath}}/>}
-        {path==='main' | path ==='profile' && <Main props={{path, setPath}}/>}
+        <Switch >
+            <Route path = "/login" component = { Auth }/> 
+            <Route path = "/register" component = { Auth }/> 
+            <PrivateRoute path = "/map" comp = { Map }/> 
+            <PrivateRoute path = "/profile" comp = { Profile }/> 
+            <Redirect from = '/' to = '/login' />
+        </Switch> 
     </div>
     );
 }
