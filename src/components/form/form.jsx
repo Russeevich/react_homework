@@ -5,40 +5,35 @@ import Button from '@material-ui/core/Button';
 import {connect} from 'react-redux'
 import { fetchLoginRequest, fetchRegisterRequest } from '../../modules/auth/actions';
 import {Link, Redirect} from 'react-router-dom'
+import { useForm } from 'react-hook-form';
 import './form.scss'
 
 const Form = (props) =>{
 
-    const [state, setState] = React.useState({
-        email: '',
-        password: '',
-        name: null
-    })
+    const { register, formState: { errors }, handleSubmit, watch} = useForm()
 
     const {isLoggedIn} = props.authReducer
 
-    const ActiveBtn = () =>{
-        if(state.email.length > 1 && state.password.length > 1){
-            return true
-        } 
-        return false
-    }
-
-    const changeValue = (e, name) =>{
-        let obj = {}
-        obj[name] = e.target.value
-
-        setState({...state, ...obj})
-    }
-
-    const loginHandler = (e) =>{
-        e.preventDefault()
+    const loginHandler = (data) =>{
 
         const {fetchLoginRequest, fetchRegisterRequest} = props
 
+        if(errors)
+            return
+
         if(props.props.register)
-        fetchLoginRequest({email: state.email, password: state.password})
-        else fetchRegisterRequest({email: state.email, password: state.password, name: state.name.split(' ')[0], surname: state.name.split(' ')[1]})
+        fetchLoginRequest(data)
+        else fetchRegisterRequest({email: data.email, password: data.password, name: data.name.split(' ')[0], surname: data.name.split(' ')[1]})
+    }
+
+    const ActiveBtn = () =>{
+        const login = watch('email'),
+        password = watch('password')
+
+        if(login && password && login.length >= 3 && password.length >= 3){
+            return true
+        }
+        return false
     }
 
     if(isLoggedIn)
@@ -47,7 +42,7 @@ const Form = (props) =>{
     return(
         <div className="form">
 
-            <form className="form__inner" onSubmit={e => loginHandler(e)}>
+            <form className="form__inner" onSubmit={handleSubmit(loginHandler)}>
 
                 <h4 className="form__title">{props.props.title}</h4>
 
@@ -55,7 +50,23 @@ const Form = (props) =>{
 
                     return (
                     <div className="form__info" key={item.placeholder}>
-                        <TextField data-testid={item.name} onChange={(e) => changeValue(e, item.name)} label={item.title} type={item.name === 'password' ? item.name : 'text'} placeholder={item.placeholder} required/>
+                        {errors[item.name] && <div className="form__errors">{item.name} {errors[item.name]?.message}</div>}
+                        <TextField 
+                        color={errors[item.name] ? "secondary" : "primary"} 
+                        data-testid={item.name} 
+                        {...register(item.name, 
+                        {
+                            required: {
+                                value: true, message: 'is required'}, 
+                                maxLength: {value: 16, message: 'is long'},
+                                minLength: {value: 3, message: 'is small'},
+                                // pattern: { value: item.name === 'email' ? /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/: '', message: "is not valid"}
+                            }
+                        )
+                        } 
+                        label={item.title} 
+                        type={item.name === 'password' ? item.name : 'text'} 
+                        placeholder={item.placeholder}/>
                     </div>
                     )
                 })}

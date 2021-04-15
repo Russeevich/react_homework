@@ -1,14 +1,15 @@
 import { combineReducers } from "redux"
 import { combineActions, handleActions } from "redux-actions"
 import { logoutFromApp } from "../auth/actions"
-import { 
-    fetchRoutesRequest, 
-    fetchRoutesFailure, 
-    fetchRoutesSuccess, 
-    getRoutesFailure, 
-    getRoutesRequest, 
-    getRoutesSuccess 
-} from "./actions"
+import {
+    fetchRoutesRequest,
+    fetchRoutesFailure,
+    fetchRoutesSuccess,
+    getRoutesFailure,
+    getRoutesRequest,
+    getRoutesSuccess,
+    deleteRoutesPoints
+} from './actions';
 
 
 const routes = handleActions({
@@ -17,7 +18,7 @@ const routes = handleActions({
 }, {})
 
 const points = handleActions({
-    [combineActions(getRoutesRequest, logoutFromApp)]: () => [],
+    [combineActions(getRoutesRequest, logoutFromApp, deleteRoutesPoints)]: () => [],
     [getRoutesSuccess]: (state, action) => action.payload
 }, [])
 

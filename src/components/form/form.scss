@@ -70,6 +70,18 @@
     &__register {
         margin-top: 33px;
     }
+    &__errors {
+        font-style: normal;
+        font-weight: normal;
+        font-size: 12px;
+        line-height: 14px;
+        color: #FF0000;
+    }
+    &__input {
+        &--errors {
+            color: #FF0000;
+        }
+    }
 }
 
 input::-webkit-input-placeholder {

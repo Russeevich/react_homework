@@ -8,70 +8,45 @@ import TopBar  from "../topbar/topbar"
 import {connect} from 'react-redux'
 import './profile.scss'
 import { fetchCardRequest } from '../../modules/card/actions';
+import { Controller, useForm } from 'react-hook-form';
 
 const Profile = (props) =>{
 
+    
     const { card } = props.cardReducer
-
-    const [state, setState] = React.useState(card)
+    
+    const { formState: { errors },handleSubmit, setValue, watch, control} = useForm(
+        {
+            defaultValues:{
+                cardNumber: card.cardNumber,
+                cardName: card.cardName,
+                cvc: card.cvc,
+                expiryDate: card.expiryDate
+            },
+            mode: 'onChange'
+        }
+    )
 
     React.useEffect(() =>{
-        setState(card)
-    }, [card])
-
-    const changeDate = (e) =>{
-        e.preventDefault()
-
-        const newVal = e.target.value,
-            parseVal = newVal.split('/').join(''),
-            maxLen = 4
-
-        if(newVal.split('/')[0] > 12 || newVal.split('')[0] > 1 || parseVal.length > maxLen || isNaN(parseVal))
-            return
-
-        if(parseVal.length % 2 === 0 && newVal.length > state.expiryDate.length && parseVal.length < maxLen){
-            setState({...state, expiryDate: `${newVal}/`})
-        } else {
-            setState({...state, expiryDate: newVal})
+        if(watch('cardNumber').length > 0){
+            const value = watch('cardNumber').replace(/\s/g, "").match(/\d{1,4}/g).join(" ").substr(0, 19) || ''
+            setValue('cardNumber', value)
         }
-    }
+        if(watch('expiryDate').length > 0){
+            let value = watch('expiryDate').replace(/\s/g, "").match(/\d{1,2}/g).join("/").substr(0, 5) || ''
 
-    const changeCardName = (e) =>{
-        e.preventDefault()
-        const newVal = e.target.value
-
-        setState({...state, cardName: newVal})
-    }
-
-    const changeCardNumber = (e) =>{
-        e.preventDefault()
-
-        const newVal = e.target.value,
-            parseVal = newVal.split(' ').join(''),
-            maxLen = 16
-        
-        if(parseVal.length > maxLen || isNaN(parseVal))
-            return
-
-        if(parseVal.length % 4 === 0 && newVal.length > state.cardNumber.length && parseVal.length < maxLen){
-            setState({...state, cardNumber: `${newVal} `})
-        } else {
-            setState({...state, cardNumber: newVal})
+            if(value.split('/')[0] > 12)
+                value = value.replace(value.split('/')[0], '12')
+            
+            setValue('expiryDate', value)
         }
-    }
+        if(watch('cvc').length > 0){
+            const value = watch('cvc').substr(0, 3) || ''
 
-    const changeCVC = (e) =>{
-        e.preventDefault()
-
-        const newVal = e.target.value,
-            parseVal = newVal.split(' ').join(''),
-            maxLen = 3
-        
-        if(parseVal.length > maxLen || isNaN(parseVal))
-            return
-
-        setState({...state, cvc: newVal})
-    }
+            setValue('cvc', value)
+        }
+        // eslint-disable-next-line
+    }, [watch('cardNumber'), watch('expiryDate'), watch('cvc')])
 
     const getCardInfo = (placeholder, match) =>{
         let cardnumber = placeholder.split('')
@@ -83,13 +58,14 @@ const Profile = (props) =>{
         return cardnumber.join('')
     }
 
-    const submitForm = (e) =>{
-        e.preventDefault()
-
+    const submitForm = (data) =>{
         const {fetchCardRequest} = props,
               {token} = props.authReducer.authStatus
 
-        fetchCardRequest({...state, token: token})
+        if(errors)
+            return
+
+        fetchCardRequest({...data, token: token})
     }
 
     return(<>
@@ -101,16 +77,50 @@ const Profile = (props) =>{
                 <h4 className="profile__title">Профиль</h4>
                 <h6 className="profile__subtitle">Введите платежные данные</h6>
 
-                <form action="" className="profile__form" onSubmit={e => submitForm(e)}>
+                <form action="" className="profile__form" onSubmit={handleSubmit(submitForm)}>
 
                     <div className="profile__info">
 
                         <div className="profile__data">
-                            <TextField value={state.cardName} onChange={e=>changeCardName(e)} className="profile__input" label="Имя владельца" placeholder="Введите имя" required/>
-                            <TextField value={state.cardNumber} onChange={e=> changeCardNumber(e)} className="profile__input" label="Номер карты" placeholder="0000 0000 0000 0000" required/>
+                            <Controller
+                                name="cardName"
+                                control={control}
+                                defaultValue={card.cardName}
+                                rules={{ required: true }}
+                                render={({ field }) => <TextField className="profile__input" label="Имя владельца" placeholder="Введите имя" {...field}/>}
+                            />
+                            {errors.cardName && <div className="form__errors">Это поле обязательно</div>}
+
+                            <Controller
+                                name="cardNumber"
+                                control={control}
+                                defaultValue={card.cardNumber}
+                                rules={{ required: true }}
+                                render={({ field }) => <TextField className="profile__input" label="Номер карты" placeholder="0000 0000 0000 0000"  {...field}/>}
+                            />
+                            {errors.cardNumber && <div className="form__errors">Это поле обязательно</div>}
                             <div className="profile__number">
-                                <TextField value={state.expiryDate} onChange={e=> changeDate(e)} className="profile__input" label="MM/YY" placeholder="01/01" required/>
-                                <TextField value={state.cvc} onChange={e=> changeCVC(e)} className="profile__input" label="CVC" placeholder="000" required/>
+
+                            <div className="profile__errors">
+                                <Controller
+                                    name="expiryDate"
+                                    control={control}
+                                    defaultValue={card.expiryDate}
+                                    rules={{ required: true }}
+                                    render={({ field }) => <TextField className="profile__input"  label="MM/YY" placeholder="01/01" {...field}/>}
+                                />
+                                {errors.expiryDate && <div className="form__errors">Это поле обязательно</div>}
+                            </div>
+                            <div className="profile__errors">
+                                <Controller
+                                    name="cvc"
+                                    control={control}
+                                    defaultValue={card.cvc}
+                                    rules={{ required: true }}
+                                    render={({ field }) => <TextField className="profile__input"  label="CVC" placeholder="000"   {...field} />}
+                                />
+                                {errors.cvc && <div className="form__errors">Это поле обязательно</div>}
+                            </div>
                             </div>
                         </div>
 
@@ -120,11 +130,11 @@ const Profile = (props) =>{
 
                                 <div className="card__top">
                                     <img src={logo} alt="" className="card__logo"/>
-                                    <span className="card__date">{getCardInfo('01/01', state.expiryDate)}</span>
+                                    <span className="card__date">{getCardInfo('01/01', watch('expiryDate'))}</span>
                                 </div>
 
                                 <div className="card__center">
-                                    <span className="card__number">{getCardInfo('0000 0000 0000 0000', state.cardNumber)}</span>
+                                    <span className="card__number">{getCardInfo('0000 0000 0000 0000', watch('cardNumber'))}</span>
                                 </div>
 
                                 <div className="card__bottom">

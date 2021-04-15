@@ -10,4 +10,7 @@ export const getRoutesRequest = createAction("GET_ROUTES_REQUEST")
 export const getRoutesSuccess = createAction("GET_ROUTES_SUCCESS")
 export const getRoutesFailure = createAction("GET_ROUTES_FAILURE")
 
+
+export const deleteRoutesPoints = createAction("DELETE_ROUTES_POINTS")
+
 //

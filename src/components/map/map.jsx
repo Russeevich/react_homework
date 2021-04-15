@@ -57,8 +57,13 @@ const Map = (props) =>{
     React.useEffect(() =>{
         if(!load)
             setLine(drawRoute(points))
+        if(points.length < 1 && !load)
+            map.flyTo({
+              center: [30.316273,59.940578],
+              zoom: 12.5,
+            })
         // eslint-disable-next-line
-    }, [points])
+    }, [points, load])
 
     const drawRoute = (coordinates) => {
 
