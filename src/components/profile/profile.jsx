@@ -9,6 +9,7 @@ import {connect} from 'react-redux'
 import './profile.scss'
 import { fetchCardRequest } from '../../modules/card/actions';
 import { Controller, useForm } from 'react-hook-form';
+import { Redirect } from 'react-router';
 
 const Profile = (props) =>{
 
@@ -26,6 +27,9 @@ const Profile = (props) =>{
             mode: 'onChange'
         }
     )
+
+    const [success, setSuccess] = React.useState(false)
+    const [redirect, setRedirect] = React.useState(false)
 
     React.useEffect(() =>{
         if(watch('cardNumber').length > 0){
@@ -62,11 +66,37 @@ const Profile = (props) =>{
         const {fetchCardRequest} = props,
               {token} = props.authReducer.authStatus
 
-        if(errors)
+        if(errors.length > 0)
             return
 
         fetchCardRequest({...data, token: token})
+
+        setSuccess(true)
     }
+
+    const goToMap = (e) =>{
+        setRedirect(true)
+    }
+
+    if(redirect)
+        return <Redirect from="/profile" to="/map"/>
+
+    if(success)
+        return(<>
+                <TopBar props={{...props}}/>
+                <section className="profile">
+
+                    <div className="profile__inner">
+                        <h4 className="profile__title">Профиль</h4>
+                        <h6 className="profile__subtitle">Платёжные данные обновлены. Теперь вы можете заказывать такси.</h6>
+                        <form action="" className="profile__form profile__form--success" onSubmit={handleSubmit(goToMap)}>
+                            <Button variant="contained" color="primary" type="submit" className="form__btn form__btn--card form__btn--success">Перейти на карту</Button>
+                        </form>
+                    </div>
+
+                </section>
+            </>
+        )
 
     return(<>
         <TopBar props={{...props}}/>

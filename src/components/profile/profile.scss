@@ -18,6 +18,9 @@
         display: flex;
         flex-direction: column;
         align-items: center;
+        &--success {
+            margin-top: 28px;
+        }
     }
     &__data {
         display: flex;
