@@ -3,15 +3,29 @@
     "version": "0.1.0",
     "private": true,
     "dependencies": {
+        "@material-ui/core": "^4.11.3",
         "@testing-library/jest-dom": "^5.11.9",
         "@testing-library/react": "^11.2.5",
         "@testing-library/user-event": "^12.8.3",
+        "babel-plugin-transform-scss": "^1.0.9",
+        "enzyme": "^3.11.0",
         "gulp-sass": "^4.1.0",
         "hub": "^6.1.2",
+        "loft-taxi-mui-theme": "^1.2.0",
+        "mapbox-gl": "^2.1.1",
         "prettier": "^2.2.1",
+        "prop-types": "^15.7.2",
         "react": "^17.0.1",
         "react-dom": "^17.0.1",
+        "react-hook-form": "^7.1.0",
+        "react-input-mask": "^2.0.4",
+        "react-redux": "^7.2.3",
+        "react-router-dom": "^5.2.0",
         "react-scripts": "4.0.3",
+        "redux": "^4.0.5",
+        "redux-actions": "^2.6.5",
+        "redux-saga": "^1.1.3",
+        "redux-saga-test-plan": "^4.0.1",
         "web-vitals": "^1.1.1",
         "wepback": "^1.0.0"
     },
@@ -46,11 +60,41 @@
         ]
     },
     "devDependencies": {
-        "cz-conventional-changelog": "^3.3.0"
+        "@babel/core": "^7.11.4",
+        "@babel/plugin-transform-react-jsx": "^7.10.4",
+        "@babel/plugin-transform-react-jsx-self": "^7.10.4",
+        "@babel/preset-env": "^7.11.0",
+        "@babel/preset-react": "^7.10.4",
+        "babel-loader": "^8.1.0",
+        "cz-conventional-changelog": "^3.3.0",
+        "cz-customizable": "^6.3.0"
+    },
+    "quokka": {
+        "babel": {
+            "presets": [
+                "react-app"
+            ]
+        },
+        "plugins": [
+            "jsdom-quokka-plugin"
+        ]
     },
     "config": {
         "commitizen": {
-            "path": "./node_modules/cz-conventional-changelog"
+            "path": "node_modules/cz-customizable"
+        },
+        "cz-customizable": {
+            "config": "src/commitizen.js"
         }
+    },
+    "babel": {
+        "presets": [
+            "@babel/preset-react",
+            "@babel/preset-env"
+        ],
+        "plugins": [
+            "@babel/plugin-transform-react-jsx",
+            "babel-plugin-transform-scss"
+        ]
     }
 }

@@ -1,0 +1,130 @@
+.taxi-form {
+    position: absolute;
+    left: 60px;
+    top: 59px;
+    z-index: 10;
+    padding-top: 20px;
+    background: #fff;
+    max-width: 468px;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0px 10px 20px -5px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    &__field {
+        width: 100%;
+        padding: 0 21px;
+    }
+    &__input {
+        font-style: normal;
+        font-weight: normal;
+        font-size: 18px !important;
+        line-height: 21px i !important;
+        color: #000000 i !important;
+        text-align: left;
+        width: 100%;
+        &:last-child {
+            margin-top: 15px;
+        }
+    }
+    &__order {
+        padding: 32px 46px 33px;
+        margin-top: 23px;
+        height: 100%;
+        background: #FFFFFF;
+        box-shadow: 0px 0px 20px -5px rgba(0, 0, 0, 0.25);
+        border-radius: 10px;
+    }
+    &__variant {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    &__item {
+        position: relative;
+        cursor: pointer;
+        background: #FFFFFF;
+        box-shadow: 0px 3px 20px rgba(0, 0, 0, 0.2);
+        border-radius: 10px;
+        padding: 12px;
+        margin-left: 20px;
+        max-width: 118px;
+        max-height: 167px;
+        width: 100%;
+        height: 100%;
+        transition: opacity .3s ease-in;
+        &:first-child {
+            margin-left: 0;
+        }
+        &:not(.active) {
+            opacity: 0.6;
+        }
+        &:hover {
+            opacity: 1;
+        }
+    }
+    &__img {
+        width: 100%;
+    }
+    &__title,
+    &__subtitle,
+    &__cost {
+        text-align: left;
+    }
+    &__title {
+        font-style: normal;
+        font-weight: normal;
+        font-size: 16px;
+        line-height: 19px;
+        margin-bottom: 8px;
+    }
+    &__subtitle {
+        font-style: normal;
+        font-weight: normal;
+        font-size: 11px;
+        line-height: 13px;
+        color: #828282;
+        margin-bottom: 4px;
+    }
+    &__cost {
+        font-family: Roboto;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 24px;
+        line-height: 28px;
+        color: #000000;
+        margin-bottom: 13px;
+    }
+    &__btn {
+        margin-top: 30px !important;
+        &--success {
+            margin-top: 21px !important;
+        }
+    }
+    &__success {
+        padding: 39px 51px 39px 41px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    &__caption,
+    &__description {
+        text-align: left;
+    }
+    &__caption {
+        font-family: Roboto;
+        font-style: normal;
+        font-weight: bold;
+        font-size: 36px;
+        line-height: 42px;
+        color: #000000;
+    }
+    &__description {
+        font-family: Roboto;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 18px;
+        line-height: 21px;
+        color: #7B7B7B;
+        margin-top: 14px;
+    }
+}
